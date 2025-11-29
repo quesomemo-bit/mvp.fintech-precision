@@ -1,96 +1,51 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Header from '@/components/Header';
+import { useState, useEffect } from 'react';
+
+const DEMO_EMAIL = 'investor@precision.io';
+const DEMO_PASS = 'Precision2024';
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [pass, setPass] = useState('');
+  const [err, setErr] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    // if already logged in, go to dashboard
+    if (typeof window !== 'undefined' && localStorage.getItem('precision_session') === '1') {
+      router.replace('/dashboard');
+    }
+  }, [router]);
+
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    // Demo login - in production, this would be an API call
-    if (email === 'investor@precision.com' && password === 'investor123') {
-      localStorage.setItem('userRole', 'investor');
-      localStorage.setItem('userEmail', email);
+    setErr('');
+    if (email === DEMO_EMAIL && pass === DEMO_PASS) {
+      localStorage.setItem('precision_session', '1');
+      localStorage.setItem('precision_user', JSON.stringify({ email, role: 'investor', name: 'Demo Investor' }));
       router.push('/dashboard');
     } else {
-      setError('Invalid credentials. Use: investor@precision.com / investor123');
+      setErr('Credenciales inválidas. Usa investor@precision.io / Precision2024');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-graphite-950 via-graphite-900 to-graphite-950">
-      <Header />
-      
-      <main className="max-w-md mx-auto px-4 py-20">
-        <div className="card">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-white mb-2">Investor Login</h2>
-            <p className="text-graphite-400">Access your investment dashboard</p>
-          </div>
-
-          {error && (
-            <div className="bg-red-900/20 border border-red-700 text-red-400 px-4 py-3 rounded-lg mb-6">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-graphite-400 mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                className="input w-full"
-                placeholder="investor@precision.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-graphite-400 mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                className="input w-full"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-
-            <button type="submit" className="btn-primary w-full">
-              Sign In
-            </button>
-          </form>
-
-          <div className="mt-8 p-4 bg-graphite-800 rounded-lg">
-            <p className="text-sm text-graphite-400 mb-2">Demo Credentials:</p>
-            <p className="text-xs text-graphite-500 font-mono">
-              Email: investor@precision.com<br />
-              Password: investor123
-            </p>
-          </div>
-
-          <div className="mt-6 text-center">
-            <Link href="/admin/login" className="text-sm text-precision-green-400 hover:text-precision-green-300">
-              Admin Login →
-            </Link>
-          </div>
-        </div>
-      </main>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <form onSubmit={submit} className="w-full max-w-md p-8 bg-white rounded-lg shadow">
+        <h2 className="text-xl font-semibold mb-4">Iniciar sesión — Demo</h2>
+        <label className="block mb-2 text-sm">Email
+          <input value={email} onChange={(e) => setEmail(e.target.value)} className="w-full border rounded px-3 py-2 mt-1" />
+        </label>
+        <label className="block mb-4 text-sm">Contraseña
+          <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" className="w-full border rounded px-3 py-2 mt-1" />
+        </label>
+        {err && <div className="text-red-600 text-sm mb-3">{err}</div>}
+        <button className="w-full bg-green-600 text-white py-2 rounded">Entrar</button>
+        <p className="text-xs text-gray-500 mt-3">Demo: investor@precision.io / Precision2024</p>
+      </form>
     </div>
   );
 }
+
