@@ -7,12 +7,34 @@ type DealDetailClientProps = {
 };
 
 export default function DealDetailClient({ deal }: DealDetailClientProps) {
-  // IMPORTANT: must return JSX
   return (
-    <div>
-      <h1>{deal.projectName}</h1>
-      <p>{deal.country}</p>
-      {/* add whatever fields you want to show */}
+    <div className="p-6 space-y-4">
+      <h1 className="text-2xl font-bold">{deal.projectName}</h1>
+      <p className="text-sm text-gray-400">
+        {deal.country} · {deal.region} · {deal.crop}
+      </p>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <div>
+          <h2 className="font-semibold">Ticket size</h2>
+          <p>
+            {deal.ticketSize} {deal.currency}
+          </p>
+        </div>
+        <div>
+          <h2 className="font-semibold">Risk score</h2>
+          <p>{deal.riskScore}</p>
+        </div>
+        <div>
+          <h2 className="font-semibold">Risk level</h2>
+          <p>{deal.riskLevel}</p>
+        </div>
+      </div>
+
+      <div>
+        <h2 className="font-semibold">Description</h2>
+        <p>{deal.description}</p>
+      </div>
     </div>
   );
 }
