@@ -1,0 +1,135 @@
+import { Deal } from '@/types';
+
+export const mockDeals: Deal[] = [
+  {
+    id: '1',
+    projectName: 'Valle Verde Maize Project',
+    country: 'Mexico',
+    region: 'Jalisco',
+    crop: 'maize',
+    hectares: 450,
+    ticketSize: 250000,
+    currency: 'EUR',
+    riskScore: 55,
+    riskLevel: 'medium',
+    revenueExpectation: {
+      pessimistic: 180000,
+      base: 320000,
+      optimistic: 450000,
+    },
+    expectedROI: {
+      min: 8,
+      base: 14,
+      max: 22,
+    },
+    climateExposure: {
+      heat: 'medium',
+      drought: 'medium',
+      soilDegradation: 'low',
+    },
+    esgBenefits: [
+      'Water conservation',
+      'Soil health improvement',
+      'Local employment',
+      'Sustainable practices',
+    ],
+    description: 'Large-scale maize cultivation project in Jalisco with proven irrigation systems and modern farming techniques. Focus on drought-resistant varieties.',
+    investmentTerm: '36 months',
+    createdAt: '2025-01-15T10:00:00Z',
+    updatedAt: '2025-01-15T10:00:00Z',
+  },
+  {
+    id: '2',
+    projectName: 'Andean Coffee Cooperative',
+    country: 'Colombia',
+    region: 'Huila',
+    crop: 'coffee',
+    hectares: 280,
+    ticketSize: 120000,
+    currency: 'EUR',
+    riskScore: 32,
+    riskLevel: 'low',
+    revenueExpectation: {
+      pessimistic: 95000,
+      base: 145000,
+      optimistic: 195000,
+    },
+    expectedROI: {
+      min: 10,
+      base: 16,
+      max: 24,
+    },
+    climateExposure: {
+      heat: 'low',
+      drought: 'low',
+      soilDegradation: 'low',
+    },
+    esgBenefits: [
+      'Fair trade certified',
+      'Biodiversity protection',
+      'Carbon sequestration',
+      'Community development',
+      'Organic certification',
+    ],
+    description: 'Premium arabica coffee cooperative in the highlands of Huila. Established supply chains with European buyers and strong climate resilience.',
+    investmentTerm: '48 months',
+    createdAt: '2025-01-10T14:30:00Z',
+    updatedAt: '2025-01-10T14:30:00Z',
+  },
+  {
+    id: '3',
+    projectName: 'Cerrado Soy Expansion',
+    country: 'Brazil',
+    region: 'Mato Grosso',
+    crop: 'soy',
+    hectares: 1200,
+    ticketSize: 500000,
+    currency: 'EUR',
+    riskScore: 72,
+    riskLevel: 'high',
+    revenueExpectation: {
+      pessimistic: 280000,
+      base: 650000,
+      optimistic: 980000,
+    },
+    expectedROI: {
+      min: 6,
+      base: 18,
+      max: 32,
+    },
+    climateExposure: {
+      heat: 'high',
+      drought: 'high',
+      soilDegradation: 'medium',
+    },
+    esgBenefits: [
+      'Zero deforestation commitment',
+      'Precision agriculture',
+      'Renewable energy use',
+    ],
+    description: 'Large-scale soy production in Brazil\'s agricultural heartland. High yield potential with exposure to commodity price volatility and climate variability.',
+    investmentTerm: '24 months',
+    createdAt: '2025-01-20T09:15:00Z',
+    updatedAt: '2025-01-20T09:15:00Z',
+  },
+];
+
+export const mockUsers = [
+  {
+    id: '1',
+    email: 'investor@precision.com',
+    password: '$2a$10$X7wE.WUVY91Jz6eqJhvvFuqWQXJqOFqQFqQFqQFqQFqQFqQFqQFqQ', // password: investor123
+    role: 'investor' as const,
+    name: 'Demo Investor',
+    createdAt: '2025-01-01T00:00:00Z',
+    watchlist: [],
+  },
+  {
+    id: '2',
+    email: 'admin@precision.com',
+    password: '$2a$10$Y8xF.XVWZ02Kz7frKiwwGvrXRYKrPGrRGrRGrRGrRGrRGrRGrRGrR', // password: admin123
+    role: 'admin' as const,
+    name: 'Platform Admin',
+    createdAt: '2025-01-01T00:00:00Z',
+  },
+];
