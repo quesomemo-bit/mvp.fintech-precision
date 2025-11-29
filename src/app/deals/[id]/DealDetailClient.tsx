@@ -1,11 +1,18 @@
 'use client';
 
-import { Deal } from '@/types'; // adjust import path if needed
+import type { Deal } from '@/types';
 
 type DealDetailClientProps = {
   deal: Deal;
 };
 
 export default function DealDetailClient({ deal }: DealDetailClientProps) {
-  // use `deal` here
+  // IMPORTANT: must return JSX
+  return (
+    <div>
+      <h1>{deal.projectName}</h1>
+      <p>{deal.country}</p>
+      {/* add whatever fields you want to show */}
+    </div>
+  );
 }
