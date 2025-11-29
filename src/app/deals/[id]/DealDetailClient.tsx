@@ -1,6 +1,6 @@
 'use client';
 
-import { Deal } from '@/src/types'; // adjust import path if needed
+import { Deal } from '@/types'; // adjust import path if needed
 
 type DealDetailClientProps = {
   deal: Deal;
