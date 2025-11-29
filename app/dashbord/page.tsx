@@ -1,111 +1,57 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
-import DealCard from '@/components/DealCard';
-import FilterPanel from '@/components/FilterPanel';
-import { mockDeals } from '@/data/mockDeals';
-import { Deal } from '@/types';
+import KPICard from '@/components/KPICard';
+import ProjectCard from '@/components/ProjectCard';
+import { mockProjects } from '@/data/mockProjects';
 
 export default function DashboardPage() {
-  const [deals, setDeals] = useState<Deal[]>(mockDeals);
-  const [filteredDeals, setFilteredDeals] = useState<Deal[]>(mockDeals);
-  const [watchlist, setWatchlist] = useState<string[]>([]);
+  const router = useRouter();
+  const [projects, setProjects] = useState(mockProjects);
 
   useEffect(() => {
-    // Load watchlist from localStorage
-    const saved = localStorage.getItem('watchlist');
-    if (saved) {
-      setWatchlist(JSON.parse(saved));
+    const s = typeof window !== 'undefined' && localStorage.getItem('precision_session');
+    if (!s) {
+      router.replace('/login');
     }
-  }, []);
-
-  const handleFilterChange = (filters: any) => {
-    let filtered = [...deals];
-
-    if (filters.country) {
-      filtered = filtered.filter(d => d.country === filters.country);
-    }
-    if (filters.crop) {
-      filtered = filtered.filter(d => d.crop === filters.crop);
-    }
-    if (filters.minTicket !== undefined) {
-      filtered = filtered.filter(d => d.ticketSize >= filters.minTicket);
-    }
-    if (filters.maxTicket !== undefined) {
-      filtered = filtered.filter(d => d.ticketSize <= filters.maxTicket);
-    }
-    if (filters.riskLevel) {
-      filtered = filtered.filter(d => d.riskLevel === filters.riskLevel);
-    }
-
-    setFilteredDeals(filtered);
-  };
-
-  const handleWatchlist = (dealId: string) => {
-    let newWatchlist: string[];
-    if (watchlist.includes(dealId)) {
-      newWatchlist = watchlist.filter(id => id !== dealId);
-    } else {
-      newWatchlist = [...watchlist, dealId];
-    }
-    setWatchlist(newWatchlist);
-    localStorage.setItem('watchlist', JSON.stringify(newWatchlist));
-  };
+  }, [router]);
 
   return (
-    <div className="min-h-screen bg-graphite-950">
-      <Header />
-      
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Investment Dashboard</h1>
-          <p className="text-graphite-400">
-            Browse curated agriculture investment opportunities with science-based risk scoring
-          </p>
-        </div>
+    <div className="min-h-screen flex bg-gray-50">
+      <Sidebar />
+      <div className="flex-1">
+        <Header />
+        <main className="p-8">
+          <h1 className="text-2xl font-bold mb-4">Panel de Inversiones — Agricultura Regenerativa</h1>
 
-        <div className="grid lg:grid-cols-4 gap-8">
-          <div className="lg:col-span-1">
-            <FilterPanel onFilterChange={handleFilterChange} />
-          </div>
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <KPICard title="Portfolio Value" value="€ 120,000" subtitle="Valor actual de inversiones" />
+            <KPICard title="Impact Score" value="84 / 100" subtitle="Indicador agregado de sostenibilidad" />
+            <KPICard title="Active Projects" value={projects.length.toString()} subtitle="Proyectos disponibles" />
+          </section>
 
-          <div className="lg:col-span-3">
-            <div className="mb-6 flex justify-between items-center">
-              <p className="text-graphite-400">
-                Showing <span className="text-white font-semibold">{filteredDeals.length}</span> deals
-              </p>
-              <div className="flex space-x-2">
-                <button className="text-sm px-4 py-2 bg-graphite-800 text-graphite-300 rounded-lg hover:bg-graphite-700">
-                  Sort by Risk
-                </button>
-                <button className="text-sm px-4 py-2 bg-graphite-800 text-graphite-300 rounded-lg hover:bg-graphite-700">
-                  Sort by ROI
-                </button>
-              </div>
+          <section className="mb-6">
+            <h2 className="text-lg font-semibold mb-3">Rendimiento (últimos 6 meses)</h2>
+            {/* Simple inline sparkline with aggregated numbers */}
+            <div className="w-full bg-white p-4 rounded shadow">
+              <div style={{height: 160}} className="flex items-center justify-center text-gray-400">[Gráfica de rendimiento — integrar Chart.js / Recharts más adelante]</div>
             </div>
+          </section>
 
-            {filteredDeals.length === 0 ? (
-              <div className="card text-center py-12">
-                <div className="text-6xl mb-4">🔍</div>
-                <h3 className="text-xl font-bold text-white mb-2">No deals match your filters</h3>
-                <p className="text-graphite-400">Try adjusting your filter criteria</p>
-              </div>
-            ) : (
-              <div className="grid md:grid-cols-2 gap-6">
-                {filteredDeals.map((deal) => (
-                  <DealCard 
-                    key={deal.id} 
-                    deal={deal} 
-                    onWatchlist={handleWatchlist}
-                    isWatchlisted={watchlist.includes(deal.id)}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </main>
+          <section>
+            <h2 className="text-lg font-semibold mb-3">Proyectos recomendados</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {projects.map(p => (
+                <ProjectCard key={p.id} project={p} />
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
   );
 }
+
